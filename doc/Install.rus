@@ -1,0 +1,24 @@
+Порядок установки:
+==================
+
+Установка:
+1. Скопируйте каталог ~Rh_Presets~ из скачанного архива в каталог
+   ~scripts~ плагина "LuaFAR Search" (LuaFAR Search).
+2. Создайте в каталоге плагина файл "_usermenu.lua", если его нет.
+   Добавьте в этот файл следующие строки:
+----------------------------------------
+local DataFile = "scripts/Rh_Presets/Rh_Presets"
+local Data = require "scripts.Rh_Presets.Rh_Presets"
+
+AddToMenu(":sep:Rh Presets")
+
+for k = 1, #Data do
+  local t = Data[k]
+  AddToMenu(t.area or "e", t.text, nil, DataFile, t.name)
+end
+----------------------------------------
+
+―――――――
+P.S. Рекомендуется также просмотреть историю изменений
+     для получения информации о новых и исправленных функциях пакета.
+―――――――

@@ -1,0 +1,10 @@
+.svn
+.gitignore
+Rh_Presets.bat
+Rh_Presets.exc
+_selfmenu.lua
+_usermenu.lua
+_usermenu.lua.default
+TODO.rdm
+*.WinMerge
+*.cfg
