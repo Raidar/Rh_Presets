@@ -462,7 +462,6 @@ return s
     data = {
       sSearchPat = [[(href="\#Note_)(\d)("\>)]],
       sReplacePat = [[$10$2]],
-      bExtended = true,
     },
   },
   { template = "html",
@@ -471,7 +470,6 @@ return s
     data = {
       sSearchPat = [[ (\<\/[bi]\>)]],
       sReplacePat = [[$1 ]],
-      bExtended = true,
     },
   },
   { template = "html",
@@ -480,7 +478,6 @@ return s
     data = {
       sSearchPat = [[([\.\,\:\;\!\?])(\<\/[bi]\>)]],
       sReplacePat = [[$2$1]],
-      bExtended = true,
     },
   },
 
@@ -645,7 +642,7 @@ do
 
   if argData then
     --far.Show(argData.action, argData.data.sSearchPat, argData.data.sReplacePat)
-    EditorAction(argData.action, argData.data)
+    lfsearch.EditorAction(argData.action, argData.data)
   else
     return Data
   end
