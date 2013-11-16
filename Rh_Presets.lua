@@ -531,11 +531,12 @@ return s
   },
 
   -- lum --
-  -- [[
+  --[[
   { template = "separator",
     text = "Lua User Menu",
     name = "lum",
   },--]]
+  --[=[
   { template = "lum",
     text = "&  — AccelStr A -> S+A",
     name = "Convert AccelStr letter to shift+letter",
@@ -554,7 +555,6 @@ return s
       bCaseSens = true,
     },
   },
-  --[=[
   { template = "lum",
     text = "&  — AccelStr S+A -> A",
     name = "Convert AccelStr shift+letter to letter",
