@@ -1,13 +1,13 @@
 Rh_Presets pack 3.0x
 
 [Info]
-Ver. : 3.1.0.0
-Date : 2013-10-13
+Ver. : 3.1.0.1
+Date : 2013-11-16
 Ware : Freeware
 Lic. : MIT
-Reqs : FAR + LuaFAR v.3.0.3627,
+Reqs : FAR + LuaFAR v.3.0.3707,
        LuaFAR Search v.3.5.0,
-       LuaFAR context v.3.0.9.0 (пока не используется)
+       LuaFAR context v.3.1.0.0 (пока не используется)
 Type : Plugin for FAR Manager (Script package)
 Desc : Rh_Presets package for LuaFAR Search
 
@@ -23,6 +23,6 @@ Link : http://raidar.github.com/Programs/FarScripts.htm#Rh_Presets
 
 [Anons]
   Rh_Presets is a package of search/replace presets for "LuaFAR Search".
-  Rh_Presets pack — пакет пресетов поиска/замены для "LuaFAR Поиск".
+  Rh_Presets pack — пакет схем поиска/замены для "LuaFAR Поиск".
 
 ―――――――
