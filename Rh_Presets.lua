@@ -96,6 +96,7 @@ Templates.separator = {
 Templates.default = {
   --text = "text",
   --name = "name",
+  --key = "key",
   action = Kinds.nreplace,
   data = {
     --sSearchPat = [[find]],
@@ -309,6 +310,7 @@ local Presets = {
   { template = "readme",
     text = "&  — Неразрывный после коротких rus-слов",
     name = "Nbsp after short rus-words",
+    --key = "Ctrl+R",
     data = {
       sSearchPat = [[\b(а|и|но|не|ни|в|к|о|с|у|во|до|за|из|ко|на|об|от|по|со|без|для|над|под|при|про|перед|после|сквозь|через)\x20]],
       sReplacePat = [[$1\xA0]],
@@ -318,6 +320,7 @@ local Presets = {
   { template = "readme",
     text = "&  — Неразрывный после коротких eng-слов",
     name = "Nbsp after short eng-words",
+    --key = "Ctrl+E",
     data = {
       sSearchPat = [[\b(and|or|a|an|the|at|to|in|on|by|of|for|into|from|onto|over|with)\x20]],
       sReplacePat = [[$1\xA0]],
@@ -637,7 +640,10 @@ do
   local argData
   for k = 1, #Data do
     local t = Data[k]
-    if t.name == arg then argData = t end
+    if t.name == arg then
+      argData = t
+      break
+    end
   end
 
   if argData then
