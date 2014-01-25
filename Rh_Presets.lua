@@ -1,12 +1,25 @@
--- LF Search presets
+--[[ LF Search presets ]]--
+
+----------------------------------------
+--[[ description:
+  -- Presets for LF Search.
+  -- Схемы для LF Search.
+--]]
+----------------------------------------
 
 --------------------------------------------------------------------------------
 local _G = _G
 
---local rhlog = require "Rh_Scripts.Utils.Logging"
---local logMsg, linMsg = rhlog.Message, rhlog.lineMessage
+----------------------------------------
+local far = far
+--local F = far.Flags
+
+----------------------------------------
+--local context = context
+--local logShow = context.ShowInfo
 
 --------------------------------------------------------------------------------
+local unit = {}
 
 ---------------------------------------- context.tables
 -- [[
@@ -576,10 +589,15 @@ return s
   --]=]
 } --- Presets
 
----------------------------------------- Data
-local Data = {}
+---------------------------------------- FillData
+local F = far.Flags
+local BT_None = F.BTYPE_NONE
+local EditorGetInfo = editor.GetInfo
 
-do
+function unit.FillData () --> (Data)
+  local Data = {}
+  unit.Data = Data
+
   -- Обеспечение уникальности:
   local NameChecks = {} -- имён предустановок (пресетов)
   local HotChars = { true, true, true, true, } -- горячих букв-клавиш
@@ -588,8 +606,20 @@ do
   local sNameError    = "Unique name required for:\nname=%s\ntext=%s"
   local sHotCharError = "Unique hot char required for:\nname=%s\ntext=%s"
 
+  local Default = Templates.default
+  if Default then
+    local data = Default.data
+    local Info = EditorGetInfo()
+
+    if Info.BlockType == BT_None then
+      data.sScope, data.sOrigin = "global", "cursor"
+    else
+      data.sScope, data.sOrigin = "block", "scope"
+    end
+  end
+  
   for k = 1, #Presets do
-    local Preset = Presets[k]
+    local Preset = copy(Presets[k])
 
     -- Поля предустановки:
     local Name = Preset.name or ''
@@ -617,26 +647,33 @@ do
     end
 
     -- Подготовка предустановки:
-    expand(Preset, Templates[Tmpl] or Templates.default)
+    expand(Preset, Templates[Tmpl] or Default)
     if Tmpl == "separator" then
     --if Preset.template == "separator" and not Text:find("^%:sep%:") then
       Preset.text = ":sep:"..Text
     else
       Preset.text = sTextFmt:format(KindChars[Preset.action], Text)
     end
-    Data[#Data + 1] = Preset
-  end
 
-end -- do
+    Data[#Data + 1] = Preset
+  end -- for
+
+  return Data
+end -- FillData
 
 ---------------------------------------- main
 do
-  local arg = ...
+  local arg = (...)
+  --far.Show(arg and arg[1])
   if type(arg) == 'table' then arg = arg[1] end
   if type(arg) ~= 'string' then arg = '' end
   --far.Show(arg, ...)
   --far.Show(unpack(...))
 
+  local Data = unit.FillData()
+  --far.Show(unpack(Data))
+
+  -- Поиск пункта
   local argData
   for k = 1, #Data do
     local t = Data[k]
@@ -645,12 +682,12 @@ do
       break
     end
   end
-
+  
   if argData then
     --far.Show(argData.action, argData.data.sSearchPat, argData.data.sReplacePat)
     lfsearch.EditorAction(argData.action, argData.data)
   else
-    return Data
+    return unit
   end
 end -- do
 --------------------------------------------------------------------------------

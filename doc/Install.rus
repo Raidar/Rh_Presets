@@ -8,7 +8,8 @@
    Добавьте в этот файл следующие строки:
 ----------------------------------------
 local DataFile = "scripts/Rh_Presets/Rh_Presets"
-local Data = require "scripts.Rh_Presets.Rh_Presets"
+local Rh_Presets = require "scripts.Rh_Presets.Rh_Presets"
+local Data = Rh_Presets.FillData()
 
 AddToMenu(":sep:Rh Presets")
 
