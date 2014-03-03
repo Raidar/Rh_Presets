@@ -1,13 +1,13 @@
 Rh_Presets pack 3.0x
 
 [Info]
-Ver. : 3.1.1.0
-Date : 2014-01-25
+Ver. : 3.1.1.1
+Date : 2014-03-03
 Ware : Freeware
 Lic. : MIT
-Reqs : FAR + LuaFAR v.3.0.3707,
-       LuaFAR Search v.3.6.0,
-       LuaFAR context v.3.1.0.0 (пока не используется)
+Reqs : FAR + LuaFAR v.3.0.3817,
+       LuaFAR Search v.3.6.1,
+       LuaFAR context v.3.1.0.1 (пока не используется)
 Type : Plugin for FAR Manager (Script package)
 Desc : Rh_Presets package for LuaFAR Search
 
