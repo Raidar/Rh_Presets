@@ -609,12 +609,18 @@ function unit.FillData () --> (Data)
   local Default = Templates.default
   if Default then
     local data = Default.data
-    local Info = EditorGetInfo()
 
-    if Info.BlockType == BT_None then
-      data.sScope, data.sOrigin = "global", "cursor"
+    local Type = far.AdvControl(F.ACTL_GETWINDOWINFO, 0).Type
+    if Type == F.WTYPE_EDITOR then
+      local Info = EditorGetInfo()
+
+      if Info.BlockType == BT_None then
+        data.sScope, data.sOrigin = "global", "cursor"
+      else
+        data.sScope, data.sOrigin = "block", "scope"
+      end
     else
-      data.sScope, data.sOrigin = "block", "scope"
+      data.sScope, data.sOrigin = "global", "scope"
     end
   end
   
