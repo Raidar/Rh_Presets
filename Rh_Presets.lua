@@ -64,6 +64,7 @@ local function AutoReplace (sTitle, sFound, sReps)
 end --
 
 ---------------------------------------- Chars
+--[[
 -- Following characters are already used: aefnrt luLUE R
 local Chars = {
   b = '0x00A0', -- No-Break space
@@ -71,7 +72,7 @@ local Chars = {
   h = '0x2010', -- Hyphen
   s = '0x0020', -- Space
 } --- Chars
-
+--]]
 ---------------------------------------- Kinds
 local Kinds = {
   nsearch  = "search",
@@ -160,7 +161,8 @@ local Presets = {
     text = "&. — Замена пробелов с точкой пробелом",
     name = "Spaced point to Space",
     data = {
-      sSearchPat = [[(\x0020\.\x0020){1,}]],
+      --sSearchPat = [[(\x0020\.\x0020){1,}]],
+      sSearchPat = [[(\x0020\.(?=\x0020)){1,}]],
       sReplacePat = [[\x0020]],
     },
   },
@@ -198,6 +200,14 @@ local Presets = {
     },
   },
   { template = "plain",
+    text = "&~ — Тире для списка",
+    name = "dash + nb-space",
+    data = {
+      sSearchPat = [[([—\-])(\x0020)]],
+      sReplacePat = [[— ]],
+    },
+  },
+  { template = "plain",
     text = "&- — Правильное тире",
     name = "Correct dash",
     data = {
@@ -206,19 +216,19 @@ local Presets = {
     },
   },
   { template = "plain",
-    text = "&= — Тире + неразрывный пробел",
-    name = "dash + nb-space",
-    data = {
-      sSearchPat = [[([—\-])(\x0020)]],
-      sReplacePat = [[— ]],
-    },
-  },
-  { template = "plain",
-    text = "&+ — Неразрывный пробел + тире",
+    text = "&_ — Неразрывный пробел + тире",
     name = "nb-space + dash",
     data = {
       sSearchPat = [[\x0020([—\-])(\x0020)]],
       sReplacePat = [[ —$2]],
+    },
+  },
+  { template = "plain",
+    text = "&= — Неразрывный дефис",
+    name = "nb-hyphen",
+    data = {
+      sSearchPat = [[(\i)-(\i)]],
+      sReplacePat = [[$1‑$2]],
     },
   },
     -- Проверка:
@@ -252,6 +262,15 @@ local Presets = {
     action = Kinds.nsearch,
     data = {
       sSearchPat = [[[a-zA-Z\d]*[a-zA-Z]\d*[а-яА-ЯёЁ][а-яА-ЯёЁ\d]*]],
+    },
+  },
+  { template = "plain",
+    text = "&4 — Разрыв двух длинных слов",
+    name = "Space between nb-ed words",
+    action = Kinds.nreplace,
+    data = {
+      sSearchPat = [[\b(\w{4,}) (\w{4,})]],
+      sReplacePat = [[$1 $2]],
     },
   },
 
@@ -321,21 +340,31 @@ local Presets = {
     },
   },
   { template = "readme",
-    text = "&  — Неразрывный после коротких rus-слов",
-    name = "Nbsp after short rus-words",
+    text = "&Q — Неразрывный после rus-предслов",
+    name = "Nbsp after rus-praewords",
     --key = "Ctrl+R",
     data = {
-      sSearchPat = [[\b(а|и|но|не|ни|в|к|о|с|у|во|до|за|из|ко|на|об|от|по|со|без|для|над|под|при|про|перед|после|сквозь|через)\x20]],
+      sSearchPat = [[\b(а|и|но|не|ни|в|к|о|с|у|во|до|за|из|ко|на|об|от|по|со|без|для|над|под|при|про)\x20]],
       sReplacePat = [[$1\xA0]],
       bExtended = true,
     },
   },
   { template = "readme",
-    text = "&  — Неразрывный после коротких eng-слов",
-    name = "Nbsp after short eng-words",
+    text = "&W — Неразрывный перед rus-послесловами",
+    name = "Nbsp before rus-postwords",
+    --key = "Ctrl+R",
+    data = {
+      sSearchPat = [[\x20(бы|же|ли)\b]],
+      sReplacePat = [[\xA0$1]],
+      bExtended = true,
+    },
+  },
+  { template = "readme",
+    text = "&  — Неразрывный после eng-предслов",
+    name = "Nbsp after eng-praewords",
     --key = "Ctrl+E",
     data = {
-      sSearchPat = [[\b(and|or|a|an|the|at|to|in|on|by|of|for|into|from|onto|over|with)\x20]],
+      sSearchPat = [[\b(and|or|a|an|the|at|to|in|on|by|of|for)\x20]],
       sReplacePat = [[$1\xA0]],
       bExtended = true,
     },
@@ -438,7 +467,7 @@ local Presets = {
     },
   },
   { template = "html",
-    text = "&  — Замена числовых мнемоник символами",
+    text = "&# — Замена числовых мнемоник символами",
     name = "Mnemonics to chars",
     data = {
       sSearchPat = [[\&\#(\d+)\;]],
@@ -492,7 +521,7 @@ return s
     text = "&  — Закрывающие теги перед знаком",
     name = "Closed tags before signs",
     data = {
-      sSearchPat = [[([\.\,\:\;\!\?])(\<\/[bi]\>)]],
+      sSearchPat = [[([\.\,\:\;\!\?])(\<\/([bius]|em|emphasis|strong)\>)]],
       sReplacePat = [[$2$1]],
     },
   },
