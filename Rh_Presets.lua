@@ -21,6 +21,8 @@ local far = far
 --------------------------------------------------------------------------------
 local unit = {}
 
+unit.guid = win.Uuid("f333ea9c-380c-4ce3-bdc7-26a1ec1920e5")
+
 ---------------------------------------- context.tables
 -- [[
 -- Simple copy of table without links to one and the same table.
