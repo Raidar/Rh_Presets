@@ -366,7 +366,7 @@ local Presets = {
     name = "Nbsp after eng-praewords",
     --key = "Ctrl+E",
     data = {
-      sSearchPat = [[\b(and|or|a|an|the|at|to|in|on|by|of|for)\x20]],
+      sSearchPat = [[\b(or|a|an|the|at|to|in|on|by|of|for)\x20]],
       sReplacePat = [[$1\xA0]],
       bExtended = true,
     },
