@@ -346,8 +346,8 @@ local Presets = {
     name = "Nbsp after rus-praewords",
     --key = "Ctrl+R",
     data = {
-      sSearchPat = [[\b(а|и|но|не|ни|в|к|о|с|у|во|до|за|из|ко|на|об|от|по|со|без|для|над|под|при|про)\x20]],
-      sReplacePat = [[$1\xA0]],
+      sSearchPat = [[(^|(?<![\-‑]))\b(а|и|но|не|ни|в|к|о|с|у|во|до|за|из|ко|на|об|от|по|со|без|для|над|под|при|про)\x20]],
+      sReplacePat = [[$2\xA0]],
       bExtended = true,
     },
   },
@@ -366,8 +366,8 @@ local Presets = {
     name = "Nbsp after eng-praewords",
     --key = "Ctrl+E",
     data = {
-      sSearchPat = [[\b(or|a|an|the|at|to|in|on|by|of|for)\x20]],
-      sReplacePat = [[$1\xA0]],
+      sSearchPat = [[(^|(?<![\-‑]))\b(or|a|an|at|to|in|on|by|of|for)\x20]],
+      sReplacePat = [[$2\xA0]],
       bExtended = true,
     },
   },
@@ -548,6 +548,7 @@ return s
     data = {
       sSearchPat = [[\\n]],
       sReplacePat = [[\\N ]],
+      bCaseSens = true,
     },
   },
 
