@@ -213,7 +213,7 @@ local Presets = {
     text = "&- — Правильное тире",
     name = "Correct dash",
     data = {
-      sSearchPat = [[(^|\x0020)-(\x0020|$)]],
+      sSearchPat = [[(^|\x0020)\-\-?(\x0020|$)]],
       sReplacePat = [[$1—$2]],
     },
   },
@@ -221,7 +221,8 @@ local Presets = {
     text = "&_ — Неразрывный пробел + тире",
     name = "nb-space + dash",
     data = {
-      sSearchPat = [[\x0020([—\-])(\x0020)]],
+      -- Manual replace only!
+      sSearchPat = [[\x0020([—\-]\-?)(\x0020)]],
       sReplacePat = [[ —$2]],
     },
   },
