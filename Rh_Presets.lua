@@ -268,7 +268,7 @@ local Presets = {
     },
   },
   { template = "plain",
-    text = "&4 — Разрыв двух длинных слов",
+    text = "&L — Разрыв двух длинных слов",
     name = "Space between nb-ed words",
     action = Kinds.nreplace,
     data = {
