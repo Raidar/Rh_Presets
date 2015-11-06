@@ -160,7 +160,7 @@ local Presets = {
     },
   },
   { template = "readme",
-    text = "&. — Замена пробелов с точкой пробелом",
+    text = "&. — Замена пробелов с точкой пробелом",
     name = "Spaced point to Space",
     data = {
       --sSearchPat = [[(\x0020\.\x0020){1,}]],
@@ -169,7 +169,7 @@ local Presets = {
     },
   },
   { template = "readme",
-    text = "&, — Замена пробелов с точками пробелом",
+    text = "&, — Замена пробелов с точками пробелом",
     name = "Spaced points to Space",
     data = {
       sSearchPat = [[(\x0020\.){2,}]],
@@ -186,7 +186,7 @@ local Presets = {
   },
     -- Преобразование:
   { template = "plain",
-    text = "&$ — 4 пробела на табуляцию",
+    text = "&$ — 4 пробела на табуляцию",
     name = "Spaces to Tab",
     data = {
       sSearchPat = [[(\x0020){4}]],
@@ -194,7 +194,7 @@ local Presets = {
     },
   },
   { template = "plain",
-    text = "&  — Удаление пробелов у табуляции",
+    text = "&  — Удаление пробелов у табуляции",
     name = "Clear spaces around Tab",
     data = {
       sSearchPat = [[(\x0020)*\t(\x0020)*]],
@@ -236,7 +236,7 @@ local Presets = {
   },
     -- Проверка:
   { template = "plain",
-    text = "&R — Russian in English word",
+    text = "&R — Russian in English word",
     name = "Rus in Eng word",
     action = Kinds.nsearch,
     data = {
@@ -244,7 +244,7 @@ local Presets = {
     },
   },
   { template = "plain",
-    text = "&E — English in Russian word",
+    text = "&E — English in Russian word",
     name = "Eng in Rus word",
     action = Kinds.nsearch,
     data = {
@@ -252,7 +252,7 @@ local Presets = {
     },
   },
   { template = "plain",
-    text = "&  — Russian + English in word",
+    text = "&  — Russian + English in word",
     name = "Rus+Eng in word",
     action = Kinds.nsearch,
     data = {
@@ -260,7 +260,7 @@ local Presets = {
     },
   },
   { template = "plain",
-    text = "&  — English + Russian in word",
+    text = "&  — English + Russian in word",
     name = "Eng+Rus in word",
     action = Kinds.nsearch,
     data = {
@@ -284,7 +284,7 @@ local Presets = {
   },
     -- Оформление:
   { template = "readme",
-    text = "&G — Пустая строка перед заголовками",
+    text = "&G — Пустая строка перед заголовками",
     name = "Empty-lined headings",
     data = {
       sSearchPat = [[^((Глава)|(Лекция)|(Приложение)|(Раздел)|(ЧАСТЬ)|(Chapter)|(PART))]],
@@ -292,7 +292,7 @@ local Presets = {
     },
   },
   { template = "readme",
-    text = "&H — Выделение подразделов в строки",
+    text = "&H — Выделение подразделов в строки",
     name = "Split subheadings",
     data = {
       sSearchPat = [[(\))\.]],
@@ -347,7 +347,8 @@ local Presets = {
     name = "Nbsp after rus-praewords",
     --key = "Ctrl+R",
     data = {
-      sSearchPat = [[(^|(?<![\-‑]))\b(а|и|но|не|ни|в|к|о|с|у|во|до|за|из|ко|на|об|от|по|со|без|для|над|под|при|про)\x20]],
+      sSearchPat = [[(^|(?<![\-‑]))\b(я|а|и|в|к|о|с|у)\x20]],
+      --sSearchPat = [[(^|(?<![\-‑]))\b(а|и|не|ни|в|к|о|с|у|во|до|за|из|ко|на|об|от|по|со)\x20]],
       sReplacePat = [[$2\xA0]],
       bExtended = true,
     },
@@ -357,19 +358,35 @@ local Presets = {
     name = "Nbsp before rus-postwords",
     --key = "Ctrl+R",
     data = {
-      sSearchPat = [[\x20(бы|же|ли)\b]],
+      sSearchPat = [[\x20(б|ж)\b]],
+      --sSearchPat = [[\x20(бы|же|ли)\b]],
       sReplacePat = [[\xA0$1]],
       bExtended = true,
     },
   },
   { template = "readme",
-    text = "&  — Неразрывный после eng-предслов",
-    name = "Nbsp after eng-praewords",
+    text = "&  — Неразрывный после lat-предслов",
+    name = "Nbsp after lat-praewords",
     --key = "Ctrl+E",
     data = {
-      sSearchPat = [[(^|(?<![\-‑]))\b(or|a|an|at|to|in|on|by|of|for)\x20]],
+      sSearchPat = [[(^|(?<![\-‑]))\b(a|an|e|o|u|y)\x20]],
+      --sSearchPat = [[(^|(?<![\-‑]))\b(or|a|an|at|to|in|on|by|of)\x20]],
       sReplacePat = [[$2\xA0]],
       bExtended = true,
+    },
+  },
+
+  -- readme fix --
+  { template = "separator",
+    text = "readme fix",
+    name = "readme fix",
+  },
+  { template = "readme",
+    text = "&  — Замена Nbsp между 2-б. словами",
+    name = "Replace Nbsp between 2-letter words",
+    data = {
+      sSearchPat = [[\b(\i{2,})\x00A0(\i{2,})]],
+      sReplacePat = [[$1 $2]],
     },
   },
 
@@ -389,7 +406,7 @@ local Presets = {
     },
   },
   { template = "html",
-    text = "&  — Очистка конца html‑страницы",
+    text = "&  — Очистка конца html-страницы",
     name = "Clear html end",
     data = {
       sSearchPat = [[(\< \/ HTML \>) .*]],
@@ -398,7 +415,7 @@ local Presets = {
     },
   },
   { template = "html",
-    text = "&  — Очистка перед конечным тэгом",
+    text = "&  — Очистка перед конечным тэгом",
     name = "Unspaced end-tags",
     data = {
       sSearchPat = [[\s* (\< \/)]],
@@ -407,7 +424,7 @@ local Presets = {
     },
   },
   { template = "html",
-    text = "&  — Очистка фона html‑страницы",
+    text = "&  — Очистка фона html-страницы",
     name = "Clear html bg",
     data = {
       sSearchPat = [[\s bgcolor \= \" (\#)? (\w){1,6} \"]],
@@ -416,7 +433,7 @@ local Presets = {
     },
   },
   { template = "html",
-    text = "&  — Удаление скриптов из html",
+    text = "&  — Удаление скриптов из html",
     name = "Clear html-scripts",
     data = {
       sSearchPat = [[\<(script) .*? \<\/\1\>]],
@@ -425,7 +442,7 @@ local Presets = {
     },
   },
   { template = "html",
-    text = "&D — Удаление динамики из html",
+    text = "&D — Удаление динамики из html",
     name = "Clear html-dynamic",
     data = {
       sSearchPat = [[\<((script)|(noscript)|(form)) .*? \<\/\1\>]],
@@ -434,7 +451,7 @@ local Presets = {
     },
   },
   { template = "html",
-    text = "&  — Удаление объектов из html",
+    text = "&  — Удаление объектов из html",
     name = "Clear html-objects",
     data = {
       sSearchPat = [[\<(object) .*? \<\/\1\>]],
@@ -443,7 +460,7 @@ local Presets = {
     },
   },
   { template = "html",
-    text = "&  — Удаление ссылки на djv‑разделы",
+    text = "&  — Удаление ссылки на djv-разделы",
     name = "Delete djv-anchors",
     data = {
       sSearchPat = [[\<((script)|(noscript)|(form)) .*? \<\/\1\>]],
@@ -487,7 +504,7 @@ return s
     },
   },
   { template = "html",
-    text = "&  — Добавление ссылки на sup‑ссылку",
+    text = "&  — Добавление ссылки на sup-ссылку",
     name = "Add href to sup-note",
     data = {
       sSearchPat = [[(\<sup\>)(\d+)(\<\/sup\>)]],
@@ -496,7 +513,7 @@ return s
     },
   },
   { template = "html",
-    text = "&  — Замена sup‑ссылки на sup‑якорь",
+    text = "&  — Замена sup‑ссылки на sup-якорь",
     name = "Replace sup-href by sup-name",
     data = {
       sSearchPat = [[a href="#Note_]],
@@ -505,7 +522,7 @@ return s
     },
   },
   { template = "html",
-    text = "&  — Выравнивание sup‑ссылки",
+    text = "&  — Выравнивание sup-ссылки",
     name = "Align sup-href",
     data = {
       sSearchPat = [[(href="\#Note_)(\d)("\>)]],
@@ -513,7 +530,7 @@ return s
     },
   },
   { template = "html",
-    text = "&  — Закрывающие теги перед пробелом",
+    text = "&  — Закрывающие теги перед пробелом",
     name = "Closed tags before space",
     data = {
       sSearchPat = [[ (\<\/[bi]\>)]],
@@ -521,7 +538,7 @@ return s
     },
   },
   { template = "html",
-    text = "&  — Закрывающие теги перед знаком",
+    text = "&  — Закрывающие теги перед знаком",
     name = "Closed tags before signs",
     data = {
       sSearchPat = [[([\.\,\:\;\!\?])(\<\/([bius]|em|emphasis|strong)\>)]],
