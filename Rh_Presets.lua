@@ -29,74 +29,97 @@ unit.guid = win.Uuid("f333ea9c-380c-4ce3-bdc7-26a1ec1920e5")
 -- Простая копия таблицы без учёта ссылок на одну и ту же таблицу.
 -- WARNING: There is no support of key-subtables and cycles!
 local function _copy (t, usemeta, tpairs) --> (table)
+
   local u = {}
   for k, v in tpairs(t) do
     u[k] = type(v) == 'table' and _copy(v, usemeta, tpairs) or v
+
   end
+
   return usemeta and setmetatable(u, getmetatable(t)) or u
+
 end --
 
 local function copy (t)
+
   return _copy(t or {}, false, pairs)
+
 end ----
 
 -- Expand table t by values from u (using subvalues).
 -- Наращение таблицы t значениями из u (с учётом подзначений).
 local function _expand (t, u, tpairs) --|> (t)
+
   for k, v in tpairs(u) do
     local w, tp = t[k], type(v)
     if w == nil then
       t[k] = tp == 'table' and _copy(v, false, tpairs) or v
+
     elseif tp == 'table' and type(w) == 'table' then
       _expand(w, v, tpairs)
+
     end
   end
+
   return t
+
 end --
 
 local function expand (t, u)
+
   if u == nil then return t end
+
   return _expand(t or {}, u, pairs)
+
 end ----
 --]]
 
 -- Автозамена без предупреждения.
 local function AutoReplace (sTitle, sFound, sReps)
+
   return "all"
+
 end --
 
 ---------------------------------------- Chars
 --[[
 -- Following characters are already used: aefnrt luLUE R
 local Chars = {
+
   b = '0x00A0', -- No-Break space
   d = '0x2014', -- Em dash
   h = '0x2010', -- Hyphen
   s = '0x0020', -- Space
+
 } --- Chars
 --]]
 ---------------------------------------- Kinds
 local Kinds = {
+
   nsearch  = "search",
   nreplace = "replace",
   asearch  = "test:search",
   areplace = "test:replace",
   xcount   = "test:count",
   xlist    = "test:showall",
+
 } --- Kinds
 
 local KindChars = {
+
   nsearch  = "s",
   nreplace = "r",
   asearch  = "a",
   areplace = "u",
   xcount   = "c",
   xlist    = "l",
+
 } --- KindChars
 
 do
   for k, v in pairs(Kinds) do
     KindChars[v] = KindChars[k]
+
   end
 end -- do
 
@@ -104,20 +127,25 @@ end -- do
 local Templates = {}
 
 Templates.separator = {
+
   --text = "text",
   --name = "sep",
   --data = nil,
+
 } -- separator
 
 Templates.default = {
+
   --text = "text",
   --name = "name",
   --key = "key",
+
   action = Kinds.nreplace,
+
   data = {
     --sSearchPat = [[find]],
     --sReplacePat = [[replace]],
-    
+
     bConfirmReplace = true,
 
     bCaseSens = false,
@@ -133,15 +161,18 @@ Templates.default = {
 
     --fUserChoiceFunc = AutoReplace,
   },
+
 } -- default
 
 ---------------------------------------- Presets
 local Presets = {
+
   -- plain --
   { template = "separator",
     text = "plain",
     name = "plain",
   },
+
     -- Чистка:
   { template = "readme",
     text = "&P — Замена обычных точек пробелом",
@@ -184,6 +215,7 @@ local Presets = {
       sReplacePat = [[\x0020]],
     },
   },
+
     -- Преобразование:
   { template = "plain",
     text = "&$ — 4 пробела на табуляцию",
@@ -234,6 +266,7 @@ local Presets = {
       sReplacePat = [[$1‑$2]],
     },
   },
+
     -- Проверка:
   { template = "plain",
     text = "&R — Russian in English word",
@@ -282,6 +315,7 @@ local Presets = {
     text = "readme",
     name = "readme",
   },
+
     -- Оформление:
   { template = "readme",
     text = "&G — Пустая строка перед заголовками",
@@ -315,6 +349,7 @@ local Presets = {
       sReplacePat = [[$1]],
     },
   },
+
     -- Проверка:
   { template = "readme",
     text = "&  — Поиск длинных строк",
@@ -347,9 +382,9 @@ local Presets = {
     name = "Nbsp after rus-praewords",
     --key = "Ctrl+R",
     data = {
-      sSearchPat = [[(^|(?<![\-‑]))\b(я|а|и|в|к|о|с|у)\x20]],
+      sSearchPat = [[(^|(?<![\-‑]))\b(я|а|и|в|к|о|с|у)(ъ?)\x20]],
       --sSearchPat = [[(^|(?<![\-‑]))\b(а|и|не|ни|в|к|о|с|у|во|до|за|из|ко|на|об|от|по|со)\x20]],
-      sReplacePat = [[$2\xA0]],
+      sReplacePat = [[$2$3\xA0]],
       bExtended = true,
     },
   },
@@ -395,6 +430,7 @@ local Presets = {
     text = "html",
     name = "html",
   },
+
     -- Преобразование:
   { template = "html",
     text = "&  — Выделение абзацев в строки",
@@ -551,6 +587,7 @@ return s
     text = "sub_assa",
     name = "sub_assa",
   },
+
     -- Преобразование:
   { template = "assa",
     text = "&  — Русский язык для стиля",
@@ -575,6 +612,7 @@ return s
     text = "pascal",
     name = "pascal",
   },
+
     -- Оформление:
   { template = "pascal",
     text = "&  — Ключевые слова строчными буквами",
@@ -637,6 +675,7 @@ return s
     },
   },
   --]=]
+
 } --- Presets
 
 ---------------------------------------- FillData
@@ -645,6 +684,7 @@ local BT_None = F.BTYPE_NONE
 local EditorGetInfo = editor.GetInfo
 
 function unit.FillData () --> (Data)
+
   local Data = {}
   unit.Data = Data
 
@@ -666,14 +706,19 @@ function unit.FillData () --> (Data)
 
       if Info.BlockType == BT_None then
         data.sScope, data.sOrigin = "global", "cursor"
+
       else
         data.sScope, data.sOrigin = "block", "scope"
+
       end
+
     else
       data.sScope, data.sOrigin = "global", "scope"
+
     end
-  end
-  
+
+  end -- if
+
   for k = 1, #Presets do
     local Preset = copy(Presets[k])
 
@@ -686,6 +731,7 @@ function unit.FillData () --> (Data)
     -- Проверки уникальности:
     if NameChecks[Name] then
       error(sNameError:format(Name, Text))
+
     end
     NameChecks[Name] = Preset -- true
 
@@ -697,24 +743,32 @@ function unit.FillData () --> (Data)
       if HotChar ~= '' then
         if HotChars[HotChar] then
           error(sHotCharError:format(Name, Text))
+
         end
+
         HotChars[HotChar] = Preset -- true
+
       end
-    end
+
+    end -- if
 
     -- Подготовка предустановки:
     expand(Preset, Templates[Tmpl] or Default)
     if Tmpl == "separator" then
     --if Preset.template == "separator" and not Text:find("^%:sep%:") then
       Preset.text = ":sep:"..Text
+
     else
       Preset.text = sTextFmt:format(KindChars[Preset.action], Text)
+
     end
 
     Data[#Data + 1] = Preset
+
   end -- for
 
   return Data
+
 end -- FillData
 
 ---------------------------------------- main
@@ -735,15 +789,19 @@ do
     local t = Data[k]
     if t.name == arg then
       argData = t
+
       break
     end
-  end
-  
+
+  end -- for
+
   if argData then
     --far.Show(argData.action, argData.data.sSearchPat, argData.data.sReplacePat)
     lfsearch.EditorAction(argData.action, argData.data)
+
   else
     return unit
+
   end
 end -- do
 --------------------------------------------------------------------------------
