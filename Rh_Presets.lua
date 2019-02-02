@@ -174,7 +174,7 @@ local Presets = {
   },
 
     -- Чистка:
-  { template = "readme",
+  { template = "plain",
     text = "&P — Замена обычных точек пробелом",
     name = "Points to Space",
     data = {
@@ -182,7 +182,7 @@ local Presets = {
       sReplacePat = [[\x0020]],
     },
   },
-  { template = "readme",
+  { template = "plain",
     text = "&S — Замена нескольких пробелов пробелом",
     name = "Spaces to Space",
     data = {
@@ -190,7 +190,7 @@ local Presets = {
       sReplacePat = [[\x0020]],
     },
   },
-  { template = "readme",
+  { template = "plain",
     text = "&. — Замена пробелов с точкой пробелом",
     name = "Spaced point to Space",
     data = {
@@ -199,7 +199,7 @@ local Presets = {
       sReplacePat = [[\x0020]],
     },
   },
-  { template = "readme",
+  { template = "plain",
     text = "&, — Замена пробелов с точками пробелом",
     name = "Spaced points to Space",
     data = {
@@ -207,6 +207,7 @@ local Presets = {
       sReplacePat = [[\x0020]],
     },
   },
+
   { template = "plain",
     text = "&T — Замена табуляции пробелом",
     name = "Tabs to Space",
@@ -305,7 +306,7 @@ local Presets = {
     name = "Space between nb-ed words",
     action = Kinds.nreplace,
     data = {
-      sSearchPat = [[\b(\w{4,}) (\w{4,})]],
+      sSearchPat = [[\b(\w{2,}) (\w{2,})]],
       sReplacePat = [[$1 $2]],
     },
   },
@@ -411,17 +412,36 @@ local Presets = {
     },
   },
 
-  -- readme fix --
-  { template = "separator",
-    text = "readme fix",
-    name = "readme fix",
-  },
   { template = "readme",
     text = "&  — Замена Nbsp между 2-б. словами",
     name = "Replace Nbsp between 2-letter words",
     data = {
       sSearchPat = [[\b(\i{2,})\x00A0(\i{2,})]],
       sReplacePat = [[$1 $2]],
+    },
+  },
+
+  -- fantlab --
+  { template = "separator",
+    text = "fantlab",
+    name = "fantlab",
+  },
+
+  { template = "fantlab",
+    text = "&  — Очистка названия от жанра",
+    name = "Clear work/opus name of genre",
+    data = {
+      sSearchPat = [[(\s\([^\(]+?\))\s*$]],
+      sReplacePat = [[]],
+    },
+  },
+
+  { template = "fantlab",
+    text = "&  — Очистка названия от жанра и страниц",
+    name = "Clear work/opus name of genre && pages",
+    data = {
+      sSearchPat = [[(\s\([^\(]+?\))?\,\sс(тр)?\.\s\d+(\-\d+)?\s*$]],
+      sReplacePat = [[]],
     },
   },
 
@@ -433,11 +453,20 @@ local Presets = {
 
     -- Преобразование:
   { template = "html",
-    text = "&  — Выделение абзацев в строки",
+    text = "&  — Выделение начальных тегов в строки",
+    name = "Split all open tags",
+    data = {
+      sSearchPat = [[(\<[^\/])]],
+      sReplacePat = [[\n$1]],
+      bExtended = true,
+    },
+  },
+  { template = "html",
+    text = "&  — Выделение тегов-абзацев в строки",
     name = "Split para-tags",
     data = {
-      sSearchPat = [[\. (\< p \>)]],
-      sReplacePat = [[.\n$1]],
+      sSearchPat = [[([\.\?\!…]) (\< p \>)]],
+      sReplacePat = [[$1\n$2]],
       bExtended = true,
     },
   },
@@ -451,7 +480,7 @@ local Presets = {
     },
   },
   { template = "html",
-    text = "&  — Очистка перед конечным тэгом",
+    text = "&  — Очистка перед конечным тегом",
     name = "Unspaced end-tags",
     data = {
       sSearchPat = [[\s* (\< \/)]],
@@ -505,7 +534,7 @@ local Presets = {
     },
   },
   { template = "html",
-    text = "&  — Основные тэги строчными буквами",
+    text = "&  — Основные теги строчными буквами",
     name = "Main tags as lower",
     data = {
       sSearchPat = [[(\<\/? ( P|H\d|A|B|I|BR|SUB|SUP|FONT|SPAN|TH|TR|TD|HR|PRE|IMG|BLOCKQUOTE ) ( (\s)|(\>) ))]],
@@ -514,7 +543,7 @@ local Presets = {
     },
   },
   { template = "html",
-    text = "&  — Остальные тэги строчными буквами",
+    text = "&  — Остальные теги строчными буквами",
     name = "Rest tags as lower",
     data = {
       sSearchPat = [[(\<\/? ( UL|LI|CENTER|NOBR|TABLE|TBODY|BODY|HEAD|META|TITLE|STYLE|LINK|HTML ) ( (\s)|(\>) ))]],
@@ -676,6 +705,7 @@ return s
   },
   --]=]
 
+--
 } --- Presets
 
 ---------------------------------------- FillData
@@ -685,12 +715,17 @@ local EditorGetInfo = editor.GetInfo
 
 function unit.FillData () --> (Data)
 
-  local Data = {}
+  local Mold = {}   -- Данные по template
+
+  local Data = {}   -- Данные для меню
   unit.Data = Data
 
   -- Обеспечение уникальности:
   local NameChecks = {} -- имён предустановок (пресетов)
-  local HotChars = { true, true, true, true, } -- горячих букв-клавиш
+  local HotChars = {    -- горячих букв-клавиш
+    true, true, true, true,
+    true, true, true, true,
+  }
   local sNameFmt = "%s: %s"
   local sTextFmt = "%s %s"
   local sNameError    = "Unique name required for:\nname=%s\ntext=%s"
@@ -752,8 +787,16 @@ function unit.FillData () --> (Data)
 
     end -- if
 
+    local Template = Templates[Tmpl] or Default
+    if (Tmpl ~= 'default') and
+       not Template.__expanded then
+      expand(Template, Default)
+      Template.__expanded = true
+
+    end -- if
+
     -- Подготовка предустановки:
-    expand(Preset, Templates[Tmpl] or Default)
+    expand(Preset, Template)
     if Tmpl == "separator" then
     --if Preset.template == "separator" and not Text:find("^%:sep%:") then
       Preset.text = ":sep:"..Text
@@ -763,8 +806,41 @@ function unit.FillData () --> (Data)
 
     end
 
-    Data[#Data + 1] = Preset
+--[[
+    if Preset.name == "Rus in Eng word" then
+      far.Show(Preset.name,
+               Preset.data.sSearchPat, Preset.data.sReplacePat,
+               Preset.data.bRegExpr and 'RegExp')
+    end -- if
+--]]
 
+    --Data[#Data + 1] = Preset
+-- [[
+    -- TODO: Исправить:
+    -- WARN: Теряется первый пресет
+    if Tmpl == "separator" then
+      Data[#Data + 1] = Preset
+
+    else
+      local Pos = Mold[Tmpl]
+      if not Pos then
+        Pos = #Data + 1
+        Mold[Tmpl] = Pos
+        -- Данные для подменю
+        Data[Pos] = {
+          mold = true,
+
+          text = Templ,
+          name = Templ,
+        }
+
+      end
+
+      local Sub = Data[Pos]
+      Sub[#Sub + 1] = Preset
+
+    end -- if-else
+--]]
   end -- for
 
   return Data
@@ -784,10 +860,27 @@ do
   --far.Show(unpack(Data))
 
   -- Поиск пункта
+  -- TODO: В отдельную функцию!
   local argData
   for k = 1, #Data do
     local t = Data[k]
-    if t.name == arg then
+
+    if t.mold then
+      local ok
+      for n = 1, #t do
+        local u = t[n]
+        if u.name == arg then
+          argData = u
+          ok = true
+
+          break
+        end
+
+      end -- for
+
+      if ok then break end
+
+    elseif t.name == arg then
       argData = t
 
       break
