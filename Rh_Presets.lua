@@ -437,13 +437,38 @@ local Presets = {
   },
 
   { template = "fantlab",
-    text = "&  — Очистка названия от жанра и страниц",
-    name = "Clear work/opus name of genre && pages",
+    text = "&! — Очистка названия от жанра и страниц",
+    name = "Clear work/opus name from genre && pages",
     data = {
-      sSearchPat = [[(\s\([^\(]+?\))?\,\sс(тр)?\.\s\d+(\-\d+)?\s*$]],
+      sSearchPat = [[(\s\([^\(]+?\))?\,\s[сc](тр)?\.\s\d+(\-\d+)?\s*$]],
       sReplacePat = [[]],
     },
   },
+  { template = "fantlab",
+    text = "&  — Удаление значения рейтинга",
+    name = "Delete rating value",
+    data = {
+      sSearchPat = [[\t\t\d\.\d\d\s\(\d+\)]],
+      sReplacePat = [[]],
+    },
+  },
+  { template = "fantlab",
+    text = "&  — Удаление счётчика отзывов",
+    name = "Delete review counter",
+    data = {
+      sSearchPat = [[\t\d+\sотз\.]],
+      sReplacePat = [[]],
+    },
+  },
+  { template = "fantlab",
+    text = "&  — Удаление пустой оценки",
+    name = "Delete empty mark",
+    data = {
+      sSearchPat = [[^\-$]],
+      sReplacePat = [[]],
+    },
+  },
+--
 
   -- html --
   { template = "separator",
