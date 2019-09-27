@@ -437,8 +437,8 @@ local Presets = {
   },
 
   { template = "fantlab",
-    text = "&! — Очистка названия от жанра и №№ страниц",
-    name = "Clear opus name from genre && page numbers",
+    text = "&! — Очистка от жанра и номеров страниц",
+    name = "Clear opus name of genre && page numbers",
     data = {
       sSearchPat = [[(\s\([^\(]+?\))?\,\s[сc](тр)?\.\s\d+(\-\d+)?\s*$]],
       sReplacePat = [[]],
@@ -471,7 +471,7 @@ local Presets = {
   },
   { template = "fantlab",
     text = "&@ — Очистка от рейтинга, отзывов, оценок",
-    name = "Clear opus name from ranks, reviews, values",
+    name = "Clear opus name of ranks, reviews, values",
     data = {
       sSearchPat = [[^(\t\t\d\.\d\d\s\(\d+\))|(\t\d+\sотз\.)|(\-)|(\s+)$]],
       sReplacePat = [[]],
