@@ -477,6 +477,22 @@ local Presets = {
       sReplacePat = [[]],
     },
   },
+  { template = "fantlab",
+    text = "&  — Формат года произведения",
+    name = "Format year of opus",
+    data = {
+      sSearchPat = [[\s+\((\d+)\)$]],
+      sReplacePat = [[. @$1.]],
+    },
+  },
+  { template = "fantlab",
+    text = "&  — Формат альт-названия произведения",
+    name = "Format alt-name of opus",
+    data = {
+      sSearchPat = [=[\s+\[(\=.+?)\]]=],
+      sReplacePat = [[ {$1}]],
+    },
+  },
 --
 
   -- html --
