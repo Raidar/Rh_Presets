@@ -693,10 +693,10 @@ return s
     },
   },
   { template = "assa",
-    text = "&N — Новая строка после DSRT",
-    name = "New line style after DSRT",
+    text = "&N — Позиционирование тега \\N",
+    name = "Positioning \\N tag",
     data = {
-      sSearchPat = [[\\n]],
+      sSearchPat = [[\s*\\[nN]\s*]],
       sReplacePat = [[\\N ]],
       bCaseSens = true,
     },
