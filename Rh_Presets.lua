@@ -880,8 +880,8 @@ function unit.FillData () --> (Data)
     end -- if
 --]]
 
-    --Data[#Data + 1] = Preset
--- [[
+    Data[#Data + 1] = Preset
+--[[
     -- TODO: Исправить:
     -- WARN: Теряется первый пресет
     if Tmpl == "separator" then
